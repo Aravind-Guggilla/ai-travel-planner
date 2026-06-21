@@ -30,4 +30,12 @@ const getTripDetailsById = async (tripId) => {
     return trip;
 }
 
-module.exports = { createTrip, getTripsByUserId, getTripDetailsById };
+const deleteTripById = async (tripId) => {
+    const db = getDB();
+    const deleteTripQuery = `
+        DELETE FROM trips WHERE id = ?
+    `;
+    await db.run(deleteTripQuery, tripId);
+};
+
+module.exports = { createTrip, getTripsByUserId, getTripDetailsById, deleteTripById };

@@ -1,4 +1,4 @@
-const { createTrip, getTripsByUserId, getTripDetailsById } = require("../services/tripService");
+const { createTrip, getTripsByUserId, getTripDetailsById, deleteTripById } = require("../services/tripService");
 
 const createTripController = async (request, response) => {
     try{
@@ -46,4 +46,26 @@ const getTripDetailsByIdController = async (request, response) => {
     }
 }
 
-module.exports = { createTripController, getTripsByUserIdController, getTripDetailsByIdController };
+const deleteTripByIdController = async (request, response) => {
+    try{
+        const tripId = request.params.tripId; // Assuming the trip ID is passed as a URL parameter 
+        const userId = request.user.userId;
+        const tripDetails = await getTripDetailsById(tripId);
+
+        if(!tripDetails){
+            return response.status(404).json({ error: "Trip not found" });
+        }
+
+        if(tripDetails.user_id !== userId){
+            return response.status(403).json({ error: "Access denied" });
+        }
+
+        await deleteTripById(tripId);
+        response.status(200).json({ message: "Trip deleted successfully" });
+
+    }catch(error){
+        console.error("Delete Trip Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+    }
+}
+module.exports = { createTripController, getTripsByUserIdController, getTripDetailsByIdController, deleteTripByIdController };
