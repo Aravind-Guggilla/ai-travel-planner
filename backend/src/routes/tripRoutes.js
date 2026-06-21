@@ -6,12 +6,12 @@ const authenticateToken = require("../middleware/authMiddleware");
 
 const { createTripController, getTripsByUserIdController, getTripDetailsByIdController, deleteTripByIdController} = require("../controllers/tripController");
 
-router.post("/create", authenticateToken, createTripController);
+router.post("/trips/create", authenticateToken, createTripController);
 
 router.get("/trips", authenticateToken, getTripsByUserIdController);
 
 router.get("/trips/:tripId", authenticateToken, getTripDetailsByIdController);
 
-router.delete("/trips/:tripId", authenticateToken, deleteTripByIdController);
+router.delete("/trips/delete/:tripId", authenticateToken, deleteTripByIdController);
 
 module.exports = router;
