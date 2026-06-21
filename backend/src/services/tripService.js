@@ -1,0 +1,33 @@
+const { getDB } = require("../database/db");
+
+const createTrip = async (tripData) => {
+    const db = getDB();
+    const {userId, destination, days, budgetType, interests} = tripData;
+    const createTripQuery = `
+        INSERT INTO 
+            trips (user_id, destination, days, budget_type, interests)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+    const result = await db.run(createTripQuery, userId, destination, days, budgetType, JSON.stringify(interests));
+    return { tripId: result.lastID };
+};
+
+const getTripsByUserId = async (userId) => {
+    const db = getDB();
+    const getTripsQuery = `
+        SELECT * FROM trips WHERE user_id = ?
+    `;
+    const trips = await db.all(getTripsQuery, userId);
+    return trips;
+};
+
+const getTripDetailsById = async (tripId) => {
+    const db = getDB();
+    const getTripDetailsQuery = `
+        SELECT * FROM trips WHERE id = ?
+    `;
+    const trip = await db.get(getTripDetailsQuery, tripId);
+    return trip;
+}
+
+module.exports = { createTrip, getTripsByUserId, getTripDetailsById };
