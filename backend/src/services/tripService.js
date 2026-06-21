@@ -38,4 +38,22 @@ const deleteTripById = async (tripId) => {
     await db.run(deleteTripQuery, tripId);
 };
 
-module.exports = { createTrip, getTripsByUserId, getTripDetailsById, deleteTripById };
+const updateTripById = async (tripId, updatedData) => {
+    const db = getDB();
+    const {destination, days, budgetType, interests } = tripData;
+
+    const query = `
+        UPDATE 
+            trips
+        SET
+            destination = ?,
+            days = ?,
+            budget_type = ?,
+            interests = ?
+        WHERE id = ?;
+  `;
+
+    await db.run( query, destination, days, budgetType, JSON.stringify(interests), tripId);
+};
+
+module.exports = { createTrip, getTripsByUserId, getTripDetailsById, deleteTripById, updateTripById };

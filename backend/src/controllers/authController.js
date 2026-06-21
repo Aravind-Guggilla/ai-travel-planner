@@ -43,7 +43,8 @@ const login = async (request, response) => {
           email: userDetail.email
         }
 
-        const jwtToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+        // const jwtToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const jwtToken = jwt.sign(payload, process.env.JWT_SECRET);
 
         response.status(200).json({ message: "Login successful", token: jwtToken });
 
