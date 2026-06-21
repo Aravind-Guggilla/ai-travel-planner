@@ -93,7 +93,8 @@ const updateTripByIdController = async (request, response) => {
     }
 }
 
-module.exports = { createTripController, 
+module.exports = { 
+    createTripController, 
     getTripsByUserIdController, 
     getTripDetailsByIdController, 
     deleteTripByIdController,
