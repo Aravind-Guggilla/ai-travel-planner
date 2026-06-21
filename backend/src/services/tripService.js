@@ -40,7 +40,7 @@ const deleteTripById = async (tripId) => {
 
 const updateTripById = async (tripId, updatedData) => {
     const db = getDB();
-    const {destination, days, budgetType, interests } = tripData;
+    const {destination, days, budgetType, interests } = updatedData;
 
     const query = `
         UPDATE 

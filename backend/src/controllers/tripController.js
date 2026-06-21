@@ -72,6 +72,7 @@ const deleteTripByIdController = async (request, response) => {
 const updateTripByIdController = async (request, response) => {
     try{
         const tripId = request.params.tripId; // Assuming the trip ID is passed as a URL parameter 
+        const { destination, days, budgetType, interests } = request.body;
         const userId = request.user.userId;
         const tripDetails = await getTripDetailsById(tripId);
 
@@ -83,7 +84,7 @@ const updateTripByIdController = async (request, response) => {
             return response.status(403).json({ error: "Access denied" });
         }
 
-        await updateTripById(tripId);
+        await updateTripById(tripId, { destination, days, budgetType, interests });
         response.status(200).json({ message: "Trip updated successfully" });
 
     }catch(error){
