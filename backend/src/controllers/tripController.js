@@ -1,4 +1,14 @@
-const { createTrip, getTripsByUserId, getTripDetailsById, deleteTripById, updateTripById } = require("../services/tripService");
+const { createTrip, 
+getTripsByUserId, 
+getTripDetailsById, 
+deleteTripById, 
+updateTripById, 
+generateTravelPlan ,
+saveTravelPlan
+} = require("../services/tripService");
+
+const {AiGenerateTripPlan} = require("../services/geminiService");
+
 
 const createTripController = async (request, response) => {
     try{
@@ -93,10 +103,45 @@ const updateTripByIdController = async (request, response) => {
     }
 }
 
+const generateTravelPlanController = async (request, response) => {
+    try{
+        const { tripId } = request.params;
+
+        const userId = request.user.userId;
+
+        const trip = await getTripDetailsById(tripId);
+
+        if (trip.user_id !== userId) {
+            return response.status(403).json({
+            error:
+                "Unauthorized Access",
+            });
+        }
+
+        const travelPlan = await generateTravelPlan(
+            {
+                destination: trip.destination,
+                days: trip.days,
+                budgetType: trip.budget_type,
+                interests: JSON.parse(trip.interests),
+            }
+        );
+
+        await saveTravelPlan(tripId, travelPlan);
+
+        response.status(200).json({ message: "Travel plan generated and saved successfully", travelPlan });
+
+    }catch(error){
+        console.error("Generate Travel Plan Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
 module.exports = { 
     createTripController, 
     getTripsByUserIdController, 
     getTripDetailsByIdController, 
     deleteTripByIdController,
-    updateTripByIdController
+    updateTripByIdController,
+    generateTravelPlanController
 };

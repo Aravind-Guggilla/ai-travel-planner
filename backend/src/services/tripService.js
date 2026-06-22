@@ -56,4 +56,37 @@ const updateTripById = async (tripId, updatedData) => {
     await db.run( query, destination, days, budgetType, JSON.stringify(interests), tripId);
 };
 
-module.exports = { createTrip, getTripsByUserId, getTripDetailsById, deleteTripById, updateTripById };
+const generateTravelPlan = async (tripId, itinerary, estimatedBudget, hotels) => {
+    
+}
+
+const saveTravelPlan = async (tripId, travelPlan) => {
+  const db = getDB();
+
+  const {itinerary, estimatedBudget, hotels} = travelPlan;
+
+  const query = `
+    UPDATE trips
+    SET
+      itinerary = ?,
+      estimated_budget = ?,
+      hotels = ?
+    WHERE id = ?;
+  `;
+
+  await db.run(
+    query,
+    JSON.stringify(itinerary),
+    JSON.stringify(estimatedBudget),
+    JSON.stringify(hotels),
+    tripId
+  );
+};
+
+module.exports = {createTrip, 
+getTripsByUserId, 
+getTripDetailsById, 
+deleteTripById, 
+updateTripById, 
+generateTravelPlan,
+saveTravelPlan };
