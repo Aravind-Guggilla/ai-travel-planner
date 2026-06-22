@@ -101,10 +101,10 @@ const updateItinerary = async (tripId, itinerary) => {
 };
 
 module.exports = {createTrip, 
-getTripsByUserId, 
-getTripDetailsById, 
-deleteTripById, 
-updateTripById, 
-// generateTravelPlan,
-saveTravelPlan,
-updateItinerary};
+    getTripsByUserId, 
+    getTripDetailsById, 
+    deleteTripById, 
+    updateTripById,
+    saveTravelPlan,
+    updateItinerary
+}; 

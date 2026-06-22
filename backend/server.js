@@ -49,11 +49,11 @@ app.get("/api", (request, response) => {
   response.send("AI Travel Planner API Running");
 });
 
-// const {generateItinerary,} = require("./src/services/geminiService");
+// const {AiGenerateTripPlan} = require("./src/services/geminiService");
 
 // app.get("/test-gemini",async (request, response) => {
 //   const result =
-//     await generateItinerary({
+//     await AiGenerateTripPlan({
 //       destination: "Tokyo",
 //       days: 3,
 //       budgetType: "Medium",

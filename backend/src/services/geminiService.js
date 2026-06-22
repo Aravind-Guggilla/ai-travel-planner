@@ -86,46 +86,88 @@ const AiGenerateTripPlan = async (tripData) => {
   return itinerary;
 };
 
-const AiRegenerateDayPlan = async (tripData, destination, day, instruction, interests, budgetType) => {
+const AiRegenerateDayPlan = async ({destination, itinerary, day, instruction, interests, budgetType}) => {
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash",
   });
   
+  // const prompt = `
+  //   You are an expert travel planner.
+
+  //   Destination:
+  //   ${destination}
+
+  //   Current Itinerary:
+
+  //   ${JSON.stringify(itinerary)}
+
+  //   Modify ONLY Day ${day}.
+
+  //   User Instruction:
+  //   ${instruction}
+
+  //   Rules:
+
+  //   1. Keep all other days unchanged.
+  //   2. Activities must be in ${destination}.
+  //   3. Maintain consistency with the rest of the trip.
+  //   4. Return the COMPLETE updated itinerary.
+  //   5. Return only JSON.
+
+  //   Format:
+
+  //   [
+  //     {
+  //       "day": 1,
+  //       "activities": []
+  //     }
+  //   ]
+  // `;
+
   const prompt = `
     You are an expert travel planner.
 
     Destination:
     ${destination}
-
-    Day Number:
-    ${day}
-
+  
     Budget Type:
     ${budgetType}
 
     Interests:
     ${interests.join(", ")}
 
-    User Request:
+    Current Itinerary:
+
+    ${JSON.stringify(itinerary)}
+
+    Modify ONLY Day ${day}.
+
+    User Instruction:
     ${instruction}
 
-    Return ONLY valid JSON.
+    Rules:
+
+    1. Keep all other days unchanged.
+    2. Activities must be in ${destination}.
+    3. Do not suggest activities from other cities or countries.
+    4. Maintain consistency with the rest of the trip.
+    5. Return the COMPLETE updated itinerary.
+    6. Return only valid JSON.
+    7. Do not include markdown.
+    8. Do not include explanations.
 
     Format:
 
-    {
-      "day": ${day},
-      "activities": [
-        "Activity 1",
-        "Activity 2",
-        "Activity 3",
-        "Activity 4",
-        "Activity 5"
-      ]
-    }
-
-    Return JSON only.
-    `;
+    [
+      {
+        "day": 1,
+        "activities": [
+          "Activity 1",
+          "Activity 2"
+        ]
+      }
+    ]
+  `;
 
   const result = await model.generateContent(prompt);
 
@@ -134,7 +176,7 @@ const AiRegenerateDayPlan = async (tripData, destination, day, instruction, inte
   text = text.replace(/```json/g, "").replace(/```/g, "").trim();
 
   return JSON.parse(text);
-  
+
 };
 
 
