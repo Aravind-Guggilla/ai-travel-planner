@@ -83,10 +83,28 @@ const saveTravelPlan = async (tripId, travelPlan) => {
   );
 };
 
+const updateItinerary = async (tripId, itinerary) => {
+
+  const db = getDB();
+
+  const query = `
+    UPDATE trips
+    SET itinerary = ?
+    WHERE id = ?;
+  `;
+
+  await db.run(
+    query,
+    JSON.stringify(itinerary),
+    tripId
+  );
+};
+
 module.exports = {createTrip, 
 getTripsByUserId, 
 getTripDetailsById, 
 deleteTripById, 
 updateTripById, 
 // generateTravelPlan,
-saveTravelPlan };
+saveTravelPlan,
+updateItinerary};

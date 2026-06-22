@@ -6,7 +6,7 @@ updateTripById,
 saveTravelPlan
 } = require("../services/tripService");
 
-const {AiGenerateTripPlan} = require("../services/geminiService");
+const {AiGenerateTripPlan, AiRegenerateDayPlan} = require("../services/geminiService");
 
 
 const createTripController = async (request, response) => {
@@ -136,7 +136,55 @@ const generateTravelPlanController = async (request, response) => {
     }
 }
 
-const regenerateDayPlanController = async (request, response) => {}
+const regenerateDayPlanController = async (request, response) => {
+    try{
+
+        const { tripId } = request.params;
+
+        const {day, instruction} = request.body;
+
+        const userId = request.user.userId;
+
+        const trip = await getTripDetailsById(tripId);
+
+        if (!trip) {
+            return response.status(404).json({
+                error: "Trip Not Found"
+            });
+        }
+
+        if (trip.user_id !== userId) {
+            return response.status(403).json({
+                error: "Unauthorized Access"
+            });
+        }
+
+        const itinerary = JSON.parse(trip.itinerary);
+
+        //passing the entire trip data to the Gemini model so that it can regenerate the plan for the 
+        // specific day based on the user instruction while keeping the rest of the itinerary intact
+
+        const regeneratedDay = await AiRegenerateDayPlan(
+            {
+                destination: trip.destination,
+                day,
+                instruction,
+                budgetType: trip.budget_type,
+                interests: JSON.parse(trip.interests)
+            }
+        );
+
+        itinerary[day - 1] = regeneratedDay; // Update the specific day in the itinerary with the regenerated plan
+
+        await saveTravelPlan(tripId, itinerary); // Save the updated itinerary back to the database
+
+        response.status(200).json({message: "Day Regenerated Successfully", itinerary});
+
+    }catch(error){
+        console.error("Regenerate Day Plan Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+    }
+}
 
 module.exports = { 
     createTripController, 

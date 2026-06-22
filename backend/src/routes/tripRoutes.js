@@ -15,7 +15,7 @@ const { createTripController,
 
 router.post("/trips/create", authenticateToken, createTripController);
 
-router.get("/trips", authenticateToken, getTripsByUserIdController);
+router.get("/my-trips", authenticateToken, getTripsByUserIdController);
 
 router.get("/trips/:tripId", authenticateToken, getTripDetailsByIdController);
 

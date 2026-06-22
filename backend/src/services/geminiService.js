@@ -86,8 +86,59 @@ const AiGenerateTripPlan = async (tripData) => {
   return itinerary;
 };
 
-const
+const AiRegenerateDayPlan = async (tripData, destination, day, instruction, interests, budgetType) => {
+  const model = genAI.getGenerativeModel({
+    model: "gemini-2.5-flash",
+  });
+  
+  const prompt = `
+    You are an expert travel planner.
+
+    Destination:
+    ${destination}
+
+    Day Number:
+    ${day}
+
+    Budget Type:
+    ${budgetType}
+
+    Interests:
+    ${interests.join(", ")}
+
+    User Request:
+    ${instruction}
+
+    Return ONLY valid JSON.
+
+    Format:
+
+    {
+      "day": ${day},
+      "activities": [
+        "Activity 1",
+        "Activity 2",
+        "Activity 3",
+        "Activity 4",
+        "Activity 5"
+      ]
+    }
+
+    Return JSON only.
+    `;
+
+  const result = await model.generateContent(prompt);
+
+  let text = result.response.text();
+
+  text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+
+  return JSON.parse(text);
+  
+};
+
 
 module.exports = {
   AiGenerateTripPlan,
+  AiRegenerateDayPlan
 };
