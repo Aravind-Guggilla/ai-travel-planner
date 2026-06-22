@@ -9,7 +9,8 @@ const { createTripController,
     getTripDetailsByIdController, 
     deleteTripByIdController,
     updateTripByIdController,
-    generateTravelPlanController
+    generateTravelPlanController,
+    regenerateDayPlanController
 } = require("../controllers/tripController");
 
 router.post("/trips/create", authenticateToken, createTripController);
@@ -23,5 +24,7 @@ router.delete("/trips/delete/:tripId", authenticateToken, deleteTripByIdControll
 router.put("/trips/update/:tripId", authenticateToken, updateTripByIdController);
 
 router.post("/trips/:tripId/generate", authenticateToken, generateTravelPlanController);
+
+router.post("/trips/:tripId/regenerate-day", authenticateToken, regenerateDayPlanController);
 
 module.exports = router;

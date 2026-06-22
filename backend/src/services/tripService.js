@@ -56,9 +56,9 @@ const updateTripById = async (tripId, updatedData) => {
     await db.run( query, destination, days, budgetType, JSON.stringify(interests), tripId);
 };
 
-const generateTravelPlan = async (tripId, itinerary, estimatedBudget, hotels) => {
-    
-}
+// const generateTravelPlan = async (tripId, itinerary, estimatedBudget, hotels) => {
+
+// }
 
 const saveTravelPlan = async (tripId, travelPlan) => {
   const db = getDB();
@@ -88,5 +88,5 @@ getTripsByUserId,
 getTripDetailsById, 
 deleteTripById, 
 updateTripById, 
-generateTravelPlan,
+// generateTravelPlan,
 saveTravelPlan };

@@ -86,6 +86,8 @@ const AiGenerateTripPlan = async (tripData) => {
   return itinerary;
 };
 
+const
+
 module.exports = {
   AiGenerateTripPlan,
 };

@@ -2,8 +2,7 @@ const { createTrip,
 getTripsByUserId, 
 getTripDetailsById, 
 deleteTripById, 
-updateTripById, 
-generateTravelPlan ,
+updateTripById,
 saveTravelPlan
 } = require("../services/tripService");
 
@@ -118,7 +117,7 @@ const generateTravelPlanController = async (request, response) => {
             });
         }
 
-        const travelPlan = await generateTravelPlan(
+        const travelPlan = await AiGenerateTripPlan(
             {
                 destination: trip.destination,
                 days: trip.days,
@@ -137,11 +136,14 @@ const generateTravelPlanController = async (request, response) => {
     }
 }
 
+const regenerateDayPlanController = async (request, response) => {}
+
 module.exports = { 
     createTripController, 
     getTripsByUserIdController, 
     getTripDetailsByIdController, 
     deleteTripByIdController,
     updateTripByIdController,
-    generateTravelPlanController
+    generateTravelPlanController,
+    regenerateDayPlanController
 };
