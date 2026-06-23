@@ -12,7 +12,7 @@ const tripRoutes = require('./src/routes/tripRoutes')
 
 const app = express()
 
-// Middleware
+// Middlewares
 app.use(cors())
 app.use(express.json())
 
