@@ -192,7 +192,7 @@
 }
 
 .submit-btn {
-  background-color: var(--color-text-primary);
+  background-color: var(--color-primary);
   color: var(--color-bg-white);
   padding: 14px;
   font-size: 15px;
@@ -201,13 +201,13 @@
   margin-top: 8px;
   transition: var(--transition-all);
   letter-spacing: 0.5px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
 }
 
 .submit-btn:hover:not(:disabled) {
-  opacity: 0.95;
-  background-color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  background-color: var(--color-primary-hover);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+  transform: translateY(-1px);
 }
 
 .submit-btn:disabled {
