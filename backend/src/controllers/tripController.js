@@ -111,11 +111,12 @@ const generateTravelPlanController = async (request, response) => {
 
         const trip = await getTripDetailsById(tripId);
 
+        if (!trip) {
+            return response.status(404).json({ error: "Trip not found" });
+        }
+
         if (trip.user_id !== userId) {
-            return response.status(403).json({
-            error:
-                "Unauthorized Access",
-            });
+            return response.status(403).json({ error: "Unauthorized Access" });
         }
 
         const travelPlan = await AiGenerateTripPlan(
@@ -123,7 +124,7 @@ const generateTravelPlanController = async (request, response) => {
                 destination: trip.destination,
                 days: trip.days,
                 budgetType: trip.budget_type,
-                interests: JSON.parse(trip.interests),
+                interests: trip.interests
             }
         );
 
@@ -160,7 +161,11 @@ const regenerateDayPlanController = async (request, response) => {
             });
         }
 
-        const currentItinerary = JSON.parse(trip.itinerary);
+        if (!trip.itinerary) {
+            return response.status(400).json({ error: "Trip itinerary is not available yet" });
+        }
+
+        const currentItinerary = trip.itinerary;
 
         //passing the entire trip data to the Gemini model so that it can regenerate the plan for the 
         // specific day based on the user instruction while keeping the rest of the itinerary intact
@@ -172,7 +177,7 @@ const regenerateDayPlanController = async (request, response) => {
                 day,
                 instruction,
                 budgetType: trip.budget_type,
-                interests: JSON.parse(trip.interests)
+                interests: trip.interests
             }
         );
         // Update the itinerary with the regenerated day plan

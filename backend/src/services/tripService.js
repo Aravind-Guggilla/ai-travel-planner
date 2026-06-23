@@ -1,110 +1,139 @@
-const { getDB } = require("../database/db");
+const {getDB} = require('../database/db')
 
-const createTrip = async (tripData) => {
-    const db = getDB();
-    const {userId, destination, days, budgetType, interests} = tripData;
-    const createTripQuery = `
-        INSERT INTO 
-            trips (user_id, destination, days, budget_type, interests)
-        VALUES (?, ?, ?, ?, ?)
-    `;
-    const result = await db.run(createTripQuery, userId, destination, days, budgetType, JSON.stringify(interests));
-    return { tripId: result.lastID };
-};
+const createTrip = async tripData => {
+  const db = getDB()
 
-const getTripsByUserId = async (userId) => {
-    const db = getDB();
-    const getTripsQuery = `
-        SELECT * FROM trips WHERE user_id = ?
-    `;
-    const trips = await db.all(getTripsQuery, userId);
-    return trips;
-};
+  const {userId, destination, days, budgetType, interests} = tripData
+  const query = `
+    INSERT INTO trips
+    (
+      user_id,
+      destination,
+      days,
+      budget_type,
+      interests
+    )
+    VALUES
+    ($1, $2, $3, $4, $5)
+    RETURNING id;
+  `
 
-const getTripDetailsById = async (tripId) => {
-    const db = getDB();
-    const getTripDetailsQuery = `
-        SELECT * FROM trips WHERE id = ?
-    `;
-    const trip = await db.get(getTripDetailsQuery, tripId);
-    return trip;
+  const result = await db.query(query, [
+    userId,
+    destination,
+    days,
+    budgetType,
+    JSON.stringify(interests),
+  ])
+
+  return {
+    tripId: result.rows[0].id,
+  }
 }
 
-const deleteTripById = async (tripId) => {
-    const db = getDB();
-    const deleteTripQuery = `
-        DELETE FROM trips WHERE id = ?
-    `;
-    await db.run(deleteTripQuery, tripId);
-};
+const getTripsByUserId = async userId => {
+  const db = getDB()
+
+  const query = `
+    SELECT *
+    FROM trips
+    WHERE user_id = $1;
+  `
+
+  const result = await db.query(query, [userId])
+
+  return result.rows
+}
+
+const getTripDetailsById = async tripId => {
+  const db = getDB()
+
+  const query = `
+    SELECT *
+    FROM trips
+    WHERE id = $1;
+  `
+
+  const result = await db.query(query, [tripId])
+
+  return result.rows[0]
+}
+
+const deleteTripById = async tripId => {
+  const db = getDB()
+
+  const query = `
+    DELETE FROM trips
+    WHERE id = $1;
+  `
+
+  await db.query(query, [tripId])
+}
 
 const updateTripById = async (tripId, updatedData) => {
-    const db = getDB();
-    const {destination, days, budgetType, interests } = updatedData;
+  const db = getDB()
 
-    const query = `
-        UPDATE 
-            trips
-        SET
-            destination = ?,
-            days = ?,
-            budget_type = ?,
-            interests = ?
-        WHERE id = ?;
-  `;
-
-    await db.run( query, destination, days, budgetType, JSON.stringify(interests), tripId);
-};
-
-// const generateTravelPlan = async (tripId, itinerary, estimatedBudget, hotels) => {
-
-// }
-
-const saveTravelPlan = async (tripId, travelPlan) => {
-  const db = getDB();
-
-  const {itinerary, estimatedBudget, hotels} = travelPlan;
+  const {destination, days, budgetType, interests} = updatedData
 
   const query = `
     UPDATE trips
     SET
-      itinerary = ?,
-      estimated_budget = ?,
-      hotels = ?
-    WHERE id = ?;
-  `;
+      destination = $1,
+      days = $2,
+      budget_type = $3,
+      interests = $4
+    WHERE id = $5;
+  `
 
-  await db.run(
-    query,
-    JSON.stringify(itinerary),
-    JSON.stringify(estimatedBudget),
-    JSON.stringify(hotels),
-    tripId
-  );
-};
+  await db.query(query, [
+    destination,
+    days,
+    budgetType,
+    JSON.stringify(interests),
+    tripId,
+  ])
+}
 
-const updateItinerary = async (tripId, itinerary) => {
+const saveTravelPlan = async (tripId, travelPlan) => {
+  const db = getDB()
 
-  const db = getDB();
+  const {itinerary, estimatedBudget, hotels} = travelPlan
 
   const query = `
     UPDATE trips
-    SET itinerary = ?
-    WHERE id = ?;
-  `;
+    SET
+      itinerary = $1,
+      estimated_budget = $2,
+      hotels = $3
+    WHERE id = $4;
+  `
 
-  await db.run(
-    query,
+  await db.query(query, [
     JSON.stringify(itinerary),
-    tripId
-  );
-};
+    JSON.stringify(estimatedBudget),
+    JSON.stringify(hotels),
+    tripId,
+  ])
+}
 
-module.exports = {createTrip, 
-    getTripsByUserId, 
-    getTripDetailsById, 
-    deleteTripById, 
-    updateTripById,
-    saveTravelPlan,
-    updateItinerary
-}; 
+const updateItinerary = async (tripId, itinerary) => {
+  const db = getDB()
+
+  const query = `
+    UPDATE trips
+    SET itinerary = $1
+    WHERE id = $2;
+  `
+
+  await db.query(query, [JSON.stringify(itinerary), tripId])
+}
+
+module.exports = {
+  createTrip,
+  getTripsByUserId,
+  getTripDetailsById,
+  deleteTripById,
+  updateTripById,
+  saveTravelPlan,
+  updateItinerary,
+}
