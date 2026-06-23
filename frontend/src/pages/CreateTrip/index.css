@@ -1,0 +1,277 @@
+.create-trip-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.create-trip-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.create-trip-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+}
+
+.create-trip-subtitle {
+  font-size: 15px;
+  color: var(--color-text-gray);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Form Card Container */
+.create-trip-form-card {
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-error-banner {
+  background-color: var(--color-accent-pink-bg);
+  border-left: 4px solid var(--color-accent-rose);
+  padding: 12px 16px;
+  border-radius: 4px;
+  color: var(--color-accent-rose);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+}
+
+/* Form Inputs */
+.text-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-light);
+  transition: var(--transition-all);
+}
+
+.text-input:focus {
+  background-color: var(--color-bg-white);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.days-input-field {
+  max-width: 150px;
+}
+
+/* Budget Selection Cards */
+.budget-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.budget-select-card {
+  border: 2px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  background-color: var(--color-bg-white);
+  transition: var(--transition-all);
+}
+
+.budget-select-card:hover {
+  border-color: var(--color-text-light-gray);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.budget-select-card.active {
+  border-color: var(--color-primary);
+  background-color: #EFF6FF;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.budget-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.budget-icon-wrapper.budget {
+  background-color: #E6F4F1;
+  color: var(--color-secondary);
+}
+
+.budget-icon-wrapper.medium {
+  background-color: #EFF6FF;
+  color: var(--color-primary);
+}
+
+.budget-icon-wrapper.luxury {
+  background-color: #FAF5FF;
+  color: #7C3AED;
+}
+
+.budget-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.budget-card-desc {
+  font-size: 13px;
+  color: var(--color-text-gray);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Interests Badge Select Grid */
+.interests-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.interest-select-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border-light);
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  transition: var(--transition-all);
+  color: var(--color-text-medium);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.interest-select-badge:hover {
+  background-color: var(--color-bg-light);
+  border-color: var(--color-text-light-gray);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+.interest-select-badge.active {
+  background-color: #E6F4F1;
+  border-color: var(--color-secondary);
+  color: #0D9488;
+  box-shadow: 0 2px 6px rgba(20, 184, 166, 0.1);
+}
+
+.interest-select-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-gray);
+  transition: var(--transition-all);
+}
+
+.interest-select-badge.active .interest-select-icon {
+  color: var(--color-secondary);
+  transform: scale(1.1);
+}
+
+/* Form Footer Actions */
+.form-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid var(--color-border-light);
+  padding-top: 24px;
+  margin-top: 8px;
+}
+
+.form-cancel-btn {
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-medium);
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border-light);
+  transition: var(--transition-all);
+}
+
+.form-cancel-btn:hover {
+  background-color: var(--color-border-light);
+  color: var(--color-text-primary);
+}
+
+.form-submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--color-primary);
+  color: var(--color-bg-white);
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+  transition: var(--transition-all);
+}
+
+.form-submit-btn:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+  transform: translateY(-1px);
+}
+
+.form-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner-plane {
+  animation: planeSpin 1.5s linear infinite;
+}
+
+@keyframes planeSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 576px) {
+  .create-trip-form-card {
+    padding: 20px 16px;
+  }
+  
+  .form-actions-row {
+    flex-direction: column-reverse;
+  }
+  
+  .form-cancel-btn, .form-submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

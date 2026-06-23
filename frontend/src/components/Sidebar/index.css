@@ -1,0 +1,122 @@
+.sidebar-container {
+  width: 260px;
+  background-color: var(--color-bg-white);
+  border-right: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 70px);
+  position: sticky;
+  top: 70px;
+  padding: 24px 16px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 90;
+}
+
+.sidebar-links-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-medium);
+  font-size: 15px;
+  font-weight: 600;
+  transition: var(--transition-all);
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-primary);
+}
+
+.sidebar-link.active {
+  background-color: var(--color-accent-pink-bg);
+  color: var(--color-primary);
+}
+
+.sidebar-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-link:hover .sidebar-link-icon {
+  transform: scale(1.05);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.sidebar-card {
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-card-icon {
+  color: var(--color-secondary);
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.sidebar-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.sidebar-card-desc {
+  font-size: 12px;
+  color: var(--color-text-gray);
+  line-height: 1.5;
+}
+
+/* Mobile responsive drawer overlay and visibility */
+@media (max-width: 992px) {
+  .sidebar-container {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    bottom: 0;
+    height: calc(100vh - 70px);
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-lg);
+    z-index: 101;
+  }
+
+  .sidebar-container.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 100;
+    animation: fadeIn 0.2s ease forwards;
+  }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
