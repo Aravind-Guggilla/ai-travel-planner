@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { getCookie, deleteCookie } from '../../services/cookies';
 import { toast } from '../../services/toast';
@@ -9,8 +9,19 @@ const Navbar = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(() => getCookie('token'));
+  const [user, setUser] = useState(() => {
+    const activeUserStr = getCookie('user');
+    if (activeUserStr) {
+      try {
+        return JSON.parse(activeUserStr);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
+  const dropdownRef = useRef(null);
 
   // Sync token and user profile details from cookies on mount or route changes
   const syncAuth = () => {
@@ -21,7 +32,7 @@ const Navbar = ({ onToggleSidebar }) => {
     if (activeUserStr) {
       try {
         setUser(JSON.parse(activeUserStr));
-      } catch (e) {
+      } catch {
         setUser(null);
       }
     } else {
@@ -30,8 +41,6 @@ const Navbar = ({ onToggleSidebar }) => {
   };
 
   useEffect(() => {
-    syncAuth();
-
     // Listen for cookie auth changes or auth-clears to update UI
     const handleAuthEvent = () => {
       syncAuth();
@@ -46,7 +55,24 @@ const Navbar = ({ onToggleSidebar }) => {
     };
   }, []);
 
+  // Close dropdown menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   const handleLogout = () => {
+    setDropdownOpen(false);
     deleteCookie('token');
     deleteCookie('user');
     
@@ -77,11 +103,10 @@ const Navbar = ({ onToggleSidebar }) => {
 
       <div className="navbar-right">
         {isAuthenticated ? (
-          <div className="user-menu-wrapper">
+          <div className="user-menu-wrapper" ref={dropdownRef}>
             <button 
               className="user-profile-trigger" 
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              onBlur={() => setTimeout(() => setDropdownOpen(false), 200)}
             >
               <div className="user-avatar">
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -99,7 +124,7 @@ const Navbar = ({ onToggleSidebar }) => {
                   <p className="dropdown-user-email">{user?.email || ''}</p>
                 </div>
                 <div className="dropdown-divider" />
-                <Link to="/dashboard" className="dropdown-item">
+                <Link to="/dashboard" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
                   <MapPin size={16} />
                   <span>Dashboard</span>
                 </Link>
